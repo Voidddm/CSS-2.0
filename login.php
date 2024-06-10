@@ -10,7 +10,5 @@ if ($resultado == "True") {
     echo "Inicio de sesión exitoso";
 } else {
     echo "Inicio de sesión fallido";
-    // Para mostrar el mensaje en la consola del navegador
-    echo "<script>console.log('Inicio de sesión fallido');</script>";
 }
 ?>
