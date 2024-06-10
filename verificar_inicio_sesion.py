@@ -1,21 +1,22 @@
+import sys
 import mysql.connector
 
-def verificar_inicio_sesion(username, password):
+def verificar_inicio_sesion(cliente_id, password):
     try:
         # Conectar a la base de datos
         conexion = mysql.connector.connect(
             host="db-2024.mysql.database.azure.com",
             user="jim",
             password="2839064Void",
-            database="db-2024"
+            database="db-ticket"
         )
 
         # Crear un cursor para ejecutar consultas SQL
         cursor = conexion.cursor()
 
         # Consulta SQL para verificar las credenciales
-        consulta = "SELECT * FROM usuarios WHERE username = %s AND password = %s"
-        cursor.execute(consulta, (username, password))
+        consulta = "SELECT * FROM clientes WHERE cliente_id = %s AND pass = %s"
+        cursor.execute(consulta, (cliente_id, password))
         resultado = cursor.fetchone()
 
         # Cerrar el cursor y la conexión
@@ -33,10 +34,10 @@ def verificar_inicio_sesion(username, password):
         return False
 
 # Ejemplo de uso
-username = input("Ingrese su nombre de usuario: ")
-password = input("Ingrese su contraseña: ")
+cliente_id = sys.argv[1]
+password = sys.argv[2]
 
-if verificar_inicio_sesion(username, password):
-    print("Inicio de sesión exitoso")
+if verificar_inicio_sesion(cliente_id, password):
+    print("True")
 else:
-    print("Inicio de sesión fallido")
+    print("False")
