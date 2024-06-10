@@ -7,7 +7,8 @@ $password = $_POST['password'];
 $resultado = exec("python verificar_inicio_sesion.py " . escapeshellarg($cliente_id) . " " . escapeshellarg($password));
 
 if ($resultado == "True") {
-    echo "Inicio de sesión exitoso";
+    header("Location: home.html"); // Redirigir a la página home.html
+    exit(); // Terminar el script para evitar que se ejecute más código
 } else {
     echo "Inicio de sesión fallido";
 }
