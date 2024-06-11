@@ -1,3 +1,4 @@
+import sys
 import mysql.connector
 
 def verificar_inicio_sesion(cliente_id, password):
@@ -33,10 +34,10 @@ def verificar_inicio_sesion(cliente_id, password):
         return False
 
 # Ejemplo de uso
-cliente_id = input("Ingrese su ID de cliente: ")
-password = input("Ingrese su contraseña: ")
+cliente_id = sys.argv[1]
+password = sys.argv[2]
 
 if verificar_inicio_sesion(cliente_id, password):
-    print("Inicio de sesión exitoso")
+    print("True")
 else:
-    print("Inicio de sesión fallido")
+    print("False")
