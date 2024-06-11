@@ -27,5 +27,29 @@
       "mode": "production"
     }
   },
-  "entities": {}
+  "entities": {
+    "clientes": {
+      "source": "clientes",
+      "rest": {
+        "methods": ["get", "post", "put", "delete"]
+      },
+      "graphql": {
+        "type": "clientes",
+        "operations": {
+          "query": true,
+          "mutation": true
+        }
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": ["read"]
+        },
+        {
+          "role": "authenticated",
+          "actions": ["create", "read", "update", "delete"]
+        }
+      ]
+    }
+  }
 }
