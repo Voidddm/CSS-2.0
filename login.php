@@ -15,8 +15,8 @@ if ($conn->connect_error) {
 }
 
 // Recibir los datos del formulario
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_GET['username'];
+$password = $_GET['password'];
 
 // Consulta SQL para verificar el usuario y la contraseña
 $sql = "SELECT * FROM clientes WHERE cliente_id = '$username' AND pass = '$password'";

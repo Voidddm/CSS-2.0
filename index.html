@@ -13,8 +13,7 @@
     <div class="container">
       <section id="login-form">
         <h2>Iniciar Sesión</h2>
-        <form action="login.php" method="post">
-          <input type="hidden" name="_method" value="POST">
+        <form action="login.php" method="get"> <!-- Cambiado a GET -->
           <label for="username">Usuario:</label>
           <input type="text" id="username" name="username" required>
           <label for="password">Contraseña:</label>
