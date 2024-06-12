@@ -1,40 +1,45 @@
 <?php
+session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    // Datos de conexión a la base de datos
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servername = "db-2024.mysql.database.azure.com";
     $db_username = "jim";
     $db_password = "2839064Void";
     $dbname = "db-ticket";
 
-    // Crear conexión
     $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
-    // Verificar conexión
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Recibir los datos del formulario
-    $username = $_GET['username'];
-    $password = $_GET['password'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Consulta SQL para verificar el usuario y la contraseña
-    $sql = "SELECT * FROM clientes WHERE cliente_id = '$username' AND pass = '$password'";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT pass FROM clientes WHERE cliente_id = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->store_result();
 
-    if ($result->num_rows > 0) {
-        // Si hay al menos un resultado, el usuario y la contraseña son correctos
-        // Redirigir a home.html
-        header("Location: home.html");
-        exit(); // Asegura que el script se detenga aquí y no siga ejecutándose
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($hash);
+        $stmt->fetch();
+
+        if (password_verify($password, $hash)) {
+            $_SESSION['username'] = $username;
+            header("Location: home.html");
+            exit();
+        } else {
+            echo "Usuario y/o contraseña incorrectos";
+        }
     } else {
-        // Si no hay resultados, el usuario y/o la contraseña son incorrectos
         echo "Usuario y/o contraseña incorrectos";
     }
 
+    $stmt->close();
     $conn->close();
 } else {
     echo "Acceso denegado";
 }
 ?>
+
