@@ -1,6 +1,6 @@
 <?php
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Datos de conexión a la base de datos
     $servername = "db-2024.mysql.database.azure.com";
     $db_username = "jim";
@@ -16,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Recibir los datos del formulario
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = $_GET['username'];
+    $password = $_GET['password'];
 
     // Consulta SQL para verificar el usuario y la contraseña
     $sql = "SELECT * FROM clientes WHERE cliente_id = '$username' AND pass = '$password'";
