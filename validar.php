@@ -1,4 +1,5 @@
 <?php
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Datos de conexión a la base de datos
     $servername = "db-2024.mysql.database.azure.com";
@@ -14,15 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Recibir y sanitizar los datos del formulario
-    $username = $conn->real_escape_string($_POST['username']);
-    $password = $conn->real_escape_string($_POST['password']);
+    // Recibir los datos del formulario
+    $username = $_GET['username'];
+    $password = $_GET['password'];
 
-    // Consulta SQL para verificar el usuario y la contraseña usando sentencias preparadas
-    $stmt = $conn->prepare("SELECT * FROM clientes WHERE cliente_id = ? AND pass = ?");
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Consulta SQL para verificar el usuario y la contraseña
+    $sql = "SELECT * FROM clientes WHERE cliente_id = '$username' AND pass = '$password'";
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         // Si hay al menos un resultado, el usuario y la contraseña son correctos
@@ -34,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo "Usuario y/o contraseña incorrectos";
     }
 
-    $stmt->close();
     $conn->close();
 } else {
     echo "Acceso denegado";
