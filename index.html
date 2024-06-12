@@ -10,8 +10,8 @@
     <h1>Sistema de Soporte de Tickets :)</h1>
     <nav>
       <ul>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="formulario.html">Contactanos</a></li>
+        <li><a href="index.php">Inicio</a></li>
+        <li><a href="formulario.php">Contactanos</a></li>
       </ul>
     </nav>
   </header>
@@ -26,9 +26,67 @@
           <input type="password" id="password" name="password" required>
           <button type="submit">Iniciar Sesión</button>
         </form>
-        <p style="text-align: center; margin-top: 10px;">¿No tienes cuenta? <a href="registro.html" style="color: blue;">Regístrate</a></p>
+        <p style="text-align: center; margin-top: 10px;">¿No tienes cuenta? <a href="registro.php" style="color: blue;">Regístrate</a></p>
       </section>
     </div>
   </main>
+  <?php
+    // Aquí puedes agregar cualquier funcionalidad PHP que necesites
+    // Ejemplo:
+    // if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    //   // If the request method is not POST, display an error message or redirect
+    header("HTTP/1.1 405 Method Not Allowed");
+    echo "405 Method Not Allowed: This page must be accessed via a POST request.";
+    exit();
+}
+
+$servername = "db-2024.mysql.database.azure.com";
+$db_username = "jim";
+$db_password = "2839064Void";
+$dbname = "db-ticket";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+// Prepare SQL statement
+$stmt = $conn->prepare("SELECT pass FROM clientes WHERE cliente_id = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$stmt->store_result();
+
+// Check if the user exists
+if ($stmt->num_rows > 0) {
+    $stmt->bind_result($hash);
+    $stmt->fetch();
+
+    // Verify the password
+    if (password_verify($password, $hash)) {
+        $_SESSION['username'] = $username;
+        header("Location: home.php");
+        exit();
+    } else {
+        $_SESSION['error'] = "Usuario y/o contraseña incorrectos";
+        header("Location: index.php");
+        exit();
+    }
+} else {
+    $_SESSION['error'] = "Usuario y/o contraseña incorrectos";
+    header("Location: index.php");
+    exit();
+}
+
+$stmt->close();
+$conn->close();
+?>
+    // }
+  ?>
 </body>
 </html>
