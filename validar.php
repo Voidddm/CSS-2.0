@@ -1,5 +1,5 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Datos de conexión a la base de datos
     $servername = "db-2024.mysql.database.azure.com";
     $db_username = "jim";
